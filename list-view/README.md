@@ -3,7 +3,8 @@
 
 Demo： [list-view](http://caijin.tech/demo/list-view/index.html#/)，使用 chrome 手机模式查看。换成手机模式之后，不能滑动的话，刷新一下就 OK 了。
 
-### 1. 效果图
+### 效果图
+
 ![](http://hexo-image.oss-cn-shenzhen.aliyuncs.com/18-5-2/19433704.jpg)
 
 ## 配置环境
@@ -269,7 +270,8 @@ Vue.use(VueLazyload, {
 
 主要就是使用了 better-scroll 的 on 获取移动偏移值（实现高亮）、scrollToElement 跳转到相应的位置（实现跳转）。以及使用 touch 事件监听触摸，来获取开始的位置，以及滑动距离（计算最后的位置）。
 
-### 1. 收获
+### 收获
+
 - 对 touch 事件有了了解
 - 对 better-scroll 的使用熟练了一点
 - vue 也熟练也一点啦，emmm
