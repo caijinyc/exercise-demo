@@ -1,0 +1,118 @@
+body {
+    text-align: center;
+    position: relative;
+}
+
+.level {
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+.level button {
+    padding: 3px 8px;
+    background: rgb(67, 183, 189);
+    /* border: 1px solid rgb(129, 129, 129); */
+    border: none;
+    color: white;
+    border-radius: 3px;
+    outline: none;
+    cursor:pointer;
+}
+.level button:hover {
+    background: rgb(23, 132, 138);
+}
+.row {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    letter-spacing: -8px;
+}
+.col {
+    display: inline-block;
+    background: rgba(32, 226, 255, 0.41);
+    border: 1px solid rgb(129, 129, 129);
+    margin: 1.5px;
+    width: 23px;
+    height: 23px;
+    letter-spacing: normal;
+    position: relative;
+}
+
+.col span {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    opacity: 0;
+    font-weight: bold;
+    /* 标准箭头 */
+    cursor:default;
+}
+
+.col:hover {
+    background: blue;
+}
+
+.gameBox {
+    margin-top: 30px;
+}
+
+.img-flag {
+    position: absolute;
+    top: 3px;
+    left: 3.5px;
+    width: 18px;
+    height: 18px;
+}
+
+.hide {
+    display: none;
+}
+
+.boom {
+    background: url('boom.svg') no-repeat 2.5px 2px;
+    background-size: 18px 18px;
+}
+
+.div-boom {
+    font-size: 30px;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+}
+
+.info {
+    margin-top: 30px;
+}
+.info p {
+    display: inline-block;
+    width: 130px;
+    margin: 0 10px;
+}
+.info p span {
+    color: rgb(67, 183, 189);
+}
+.num-1 {
+    color: rgb(8, 153, 235);
+}
+.num-2 {
+    color: rgb(255, 45, 178);
+}
+.num-3 {
+    color: rgb(109, 224, 176);
+}
+.num-4 {
+    color: rgb(8, 153, 235);
+}
+.num-5 {
+    color: rgb(255, 167, 45);
+}
+.num-6 {
+    color: rgb(49, 140, 102);
+}
+.num-7 {
+    color: rgb(168, 55, 237);
+}
+
+.num-8 {
+    color: rgb(15, 254, 154);
+}

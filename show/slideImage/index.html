@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style media="screen">
+            body {
+                text-align: center;
+            }
+            .box {
+                margin-top: 50px;
+            }
+            .menu-hide {
+                display: none;
+            }
+            .div-img {
+                transition: width 0.8s, height 0.8s;
+                width: 200px;
+                height: 200px;
+            }
+            .delet-hightLight {
+                opacity: 0.5;
+                width: 150px;
+                height: 150px;
+            }
+            .slideImage {
+                position: relative;
+                display: inline-block;
+                text-align: center;
+            }
+            .slideImage button {
+                background: rgba(0,0,0,0.3);
+                color: white;
+                border: none;
+                width: 60px;
+                height: 30px;
+                outline: none;
+            }
+            .slideImage button:hover {
+                background: rgba(0,0,0,0.8);
+            }
+            .slideImage-btn-next {
+                position: absolute;
+                right: 10px;
+                top: 46%;
+                transform: translateY(-50%);
+            }
+            .slideImage-btn-last {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .div-dot-img-next {
+                position: relative;
+                bottom: 30px;
+            }
+            .dot-img-next {
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                background: gray;
+                border-radius: 50%;
+                opacity: 0.8;
+            }
+            .white {
+                background: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <div class="slideImage">
+                <div class="slideImage-list">
+                    <img src="img/1.jpg" alt="">
+                    <img class="menu-hide" src="img/2.jpg" alt="">
+                    <img class="menu-hide" src="img/3.jpg" alt="">
+                </div>
+                <div class="div-dot-img-next">
+                    <span class="dot-img-next white" data-dotspan="0"></span>
+                    <span class="dot-img-next" data-dotspan="1"></span>
+                    <span class="dot-img-next" data-dotspan="2"></span>
+                </div>
+                <button class="slideImage-btn-next">下一张</button>
+                <button class="slideImage-btn-last">上一张</button>
+            </div>
+        </div>
+        <script>
+            var log = function() {
+                console.log.apply(console, arguments)
+            }
+
+            var e = function (selector) {
+                return document.querySelector(selector)
+            }
+
+            var appendHTML = function(element, html) {
+                element.insertAdjacenHTML('beforeend', html)
+            }
+
+            var bindEvent = function(element, eventName, callback) {
+                element.addEventListener(eventName, callback)
+            }
+
+            var toggleClass = function (element, className) {
+                if (element.classList.contains(className)) {
+                    element.classList.remove(className)
+                } else {
+                    element.classList.add(className)
+                }
+            }
+
+            var bindAll = function (selector, eventName, callback) {
+                var elements = document.querySelectorAll(selector)
+
+                log('eee', elements.length)
+                for (var i = 0; i < elements.length; i++) {
+                    var e = elements[i]
+                    bindEvent(e, eventName, callback)
+                }
+            }
+            var eAll = function (selector) {
+                return document.querySelectorAll(selector)
+            }
+
+            var addAll = function (className, addClassName) {
+                var a = eAll(className)
+                for (var i = 0; i < a.length; i++) {
+                    if (!a[i].classList.contains(addClassName)) {
+                        a[i].classList.add(addClassName)
+                    }
+                }
+            }
+
+            var removeClass = function (className, removeClassName) {
+                var r = eAll(className)
+                for (var i = 0; i < r.length; i++) {
+                    if (r[i].classList.contains(removeClassName)) {
+                        r[i].classList.remove(removeClassName)
+                    }
+                }
+
+            }
+
+            var find = function (element, selector) {
+                return element.querySelector(selector)
+            }
+        </script>
+        <script>
+            var slideImage = function () {
+                var btnNext = e('.slideImage-btn-next')
+                var btnLast = e('.slideImage-btn-last')
+                // 通过父节点获取所有图片的节点
+                var img = e('.slideImage-list').children
+
+                var changeDotColor = function (i) {
+                    // 移除所有 dot-img-next 中的 white class
+                    removeClass('.dot-img-next', 'white')
+                    var x = eAll('.dot-img-next')
+                    x[i].classList.add('white')
+                }
+
+                // 下一张
+                var nextImage = function () {
+                    var className = 'menu-hide'
+                    // 遍历图片，如果图片没有 hide 这个 class，就添加 hide
+                    // 然后给下一张图片去掉 hide
+                    for (var i = 0; i < img.length; i++) {
+                        if (!img[i].classList.contains(className)) {
+                            var x = (i + 1) % img.length
+                            img[i].classList.add(className)
+                            changeDotColor(x)
+                            img[x].classList.remove(className)
+                            break
+                        }
+                    }
+                }
+
+                // 使用 setInterval
+                var stop = null;
+                var tick = function () {
+                    stop = setInterval(function () {
+                        nextImage()
+                    }, 3000)
+                }
+                tick()
+                // 清除 setInterval
+                var stopTick = function() {
+                    clearInterval(stop)
+                    stop = null
+                }
+                bindEvent(btnNext, 'click', function () {
+                    nextImage()
+                    // 点击下一张之后重新计时
+                    stopTick()
+                    tick()
+                })
+
+                // 上一张
+                bindEvent(btnLast, 'click', function () {
+                    var className = 'menu-hide'
+                    for (var i = 0; i < img.length; i++) {
+                        if (!img[i].classList.contains(className)) {
+                            var x = (i - 1) % img.length
+                            if (x < 0) {
+                                x = 2
+                            }
+                            changeDotColor(x)
+                            img[i].classList.add(className)
+                            img[x].classList.remove(className)
+                            break
+                        }
+                    }
+                    stopTick()
+                    tick()
+                })
+                bindAll('.dot-img-next', 'mouseenter', function (event) {
+                    for (var i = 0; i < img.length; i++) {
+                        if (!img[i].classList.contains('menu-hide')) {
+                            img[i].classList.add('menu-hide')
+                            break
+                        }
+                    }
+                    var target = event.target
+                    var x = parseInt(target.dataset.dotspan)
+                    // log(x, 'target')
+                    img[x].classList.remove('menu-hide')
+                    // target.classList.add('white')
+                    changeDotColor(x)
+                    stopTick()
+                })
+                bindAll('.dot-img-next', 'mouseout', function (event) {
+                    tick()
+                })
+            }
+
+            slideImage()
+        </script>
+    </body>
+</html>
