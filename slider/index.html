@@ -16,8 +16,6 @@
       overflow: hidden;
       font-size: 0;
     }
-    .slider-content {
-    }
     .tick {
       position: absolute;
       left: 50%;
@@ -32,13 +30,42 @@
       border-radius: 50%;
       background: white;
       opacity: 0.5;
-      transition: opacity 0.3s;
+      transition: opacity 0.6s;
     }
     .slider-tick-now {
       opacity: 1;
     }
     .trn {
       transition: all .3s;
+    }
+    .btn {
+      position: absolute;
+      top: 50%;
+      height: 30px;
+      width: 100%;
+      transform: translateY(-50%);
+      /* text-align: center; */
+    }
+    .btn button {
+      width: 60px;
+      height: 30px;
+      border: none;
+      background: rgba(0, 0, 0, 0.3);
+      outline: none;
+      cursor: pointer;
+      color: white;
+      transition: all 0.5s;
+    }
+    .btn button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .btn .next {
+      position: absolute;
+      right: 10px;
+    }
+    .btn .last {
+      position: absolute;
+      left: 10px;
     }
   </style>
 </head>
@@ -58,9 +85,11 @@
       <li class="slider-tick"></li>
       <li class="slider-tick"></li>
     </ul>
+    <div class="btn">
+      <button class="last">上一张</button>
+      <button class="next">下一张</button>
+    </div>
   </section>
-  <button class="last">last</button>
-  <button class="next">next</button>
   <script>
     let sliderWidth = 730, sliderHeight = 336
     function mySlicer (sliderWidth, sliderHeight, delay) {
@@ -75,12 +104,12 @@
       
       let moveWidth = sliderWidth
       let z = moveWidth
+      let imgNow = 0
       sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
 
       let noMove = false
 
       let tick = document.querySelectorAll('.slider-tick')
-
       // 改变 translate 使轮播图滚动
       let move = setInterval(imgNext, delay)
 
@@ -90,8 +119,17 @@
         if (noMove === true) {
           return
         }
-
+        
         z += moveWidth
+        imgNow = (z - moveWidth) / moveWidth % (imgs.length - 2)
+        console.log(imgNow)
+        for (let i = 0; i < tick.length; i++) {
+          if (i === imgNow) {
+            tick[i].classList.add('slider-tick-now')
+          } else {
+            tick[i].classList.remove('slider-tick-now')
+          }
+        }
 
         sliderContent.className = `slider-content trn`
         sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
@@ -104,7 +142,7 @@
             sliderContent.className = `slider-content`
             sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
             noMove = false
-          }, 300)
+          }, 500)
         }
       }
       
@@ -115,6 +153,19 @@
         }
 
         z -= moveWidth
+        if (z === 0) {
+          imgNow = imgs.length - 3
+        } else {
+          imgNow = (z - moveWidth) / moveWidth % (imgs.length - 2)
+        }
+        console.log(imgNow)
+        for (let i = 0; i < tick.length; i++) {
+          if (i === imgNow) {
+            tick[i].classList.add('slider-tick-now')
+          } else {
+            tick[i].classList.remove('slider-tick-now')
+          }
+        }
 
         sliderContent.className = `slider-content trn`
         sliderContent.style.transform = `translate3d(-${z}px, 0, 0)`
@@ -125,9 +176,8 @@
             z = sliderContentWidth - moveWidth * 2
             sliderContent.className = `slider-content`
             sliderContent.style.transform = `translate3d(-${z}px, 0, 0)`
-            console.log(z)
             noMove = false
-          }, 300)
+          }, 500)
         }
       }
 
@@ -145,7 +195,8 @@
         move = setInterval(imgNext, delay)
       })
     }
-    mySlicer(sliderWidth, sliderHeight, 1000)
+    
+    mySlicer(sliderWidth, sliderHeight, 3000)
   </script>
 </body>
 </html>
