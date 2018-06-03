@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A Slider Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .my-slider {
+      position: relative;
+      margin: 0 auto;
+      overflow: hidden;
+      font-size: 0;
+    }
+    .slider-content {
+    }
+    .tick {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translate3d(-50%, 0, 0);
+    }
+    .slider-tick {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 2px;
+      border-radius: 50%;
+      background: white;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .slider-tick-now {
+      opacity: 1;
+    }
+    .trn {
+      transition: all .3s;
+    }
+  </style>
+</head>
+<body>
+  <section class="my-slider">
+    <div class="slider-content trn">
+      <img class="slider-img" src="img/4.jpg" alt="">
+      <img class="slider-img" src="img/1.jpg" alt="">
+      <img class="slider-img" src="img/2.jpg" alt="">
+      <img class="slider-img" src="img/3.jpg" alt="">
+      <img class="slider-img" src="img/4.jpg" alt="">
+      <img class="slider-img" src="img/1.jpg" alt="">
+    </div>
+    <ul class="tick">
+      <li class="slider-tick slider-tick-now"></li>
+      <li class="slider-tick"></li>
+      <li class="slider-tick"></li>
+      <li class="slider-tick"></li>
+    </ul>
+  </section>
+  <button class="last">last</button>
+  <button class="next">next</button>
+  <script>
+    let sliderWidth = 730, sliderHeight = 336
+    function mySlicer (sliderWidth, sliderHeight, delay) {
+      let mySlider = document.querySelector('.my-slider')
+      mySlider.style.width = sliderWidth + 'px'
+      mySlider.style.heigth = sliderHeight + 'px'
+
+      let imgs = document.querySelectorAll('.slider-img')
+      let sliderContentWidth = imgs.length * sliderWidth
+      let sliderContent = document.querySelector('.slider-content')
+      sliderContent.style.width = sliderContentWidth + 'px'
+      
+      let moveWidth = sliderWidth
+      let z = moveWidth
+      sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
+
+      let noMove = false
+
+      let tick = document.querySelectorAll('.slider-tick')
+
+      // 改变 translate 使轮播图滚动
+      let move = setInterval(imgNext, delay)
+
+      // 下一张
+      function imgNext () {
+
+        if (noMove === true) {
+          return
+        }
+
+        z += moveWidth
+
+        sliderContent.className = `slider-content trn`
+        sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
+        
+          // 当移动到最后一张图（也就是第一张图片的复制）的时候需要切换到第一张（实际的第一张）上去
+        if (z === sliderContentWidth - moveWidth) {
+          noMove = true
+          setTimeout(() => {
+            z = moveWidth
+            sliderContent.className = `slider-content`
+            sliderContent.style.transform = `translate3d(${-z}px, 0, 0)`
+            noMove = false
+          }, 300)
+        }
+      }
+      
+      // 上一张
+      function imgLast () {
+        if (noMove === true) {
+          return
+        }
+
+        z -= moveWidth
+
+        sliderContent.className = `slider-content trn`
+        sliderContent.style.transform = `translate3d(-${z}px, 0, 0)`
+        
+        if (z === 0) {
+          noMove = true
+          setTimeout(() => {
+            z = sliderContentWidth - moveWidth * 2
+            sliderContent.className = `slider-content`
+            sliderContent.style.transform = `translate3d(-${z}px, 0, 0)`
+            console.log(z)
+            noMove = false
+          }, 300)
+        }
+      }
+
+      let next = document.querySelector('.next')
+      next.addEventListener('click', (event) => {
+        clearInterval(move)
+        imgNext()
+        move = setInterval(imgNext, delay)
+      })
+
+      let last = document.querySelector('.last')
+      last.addEventListener('click', (event) => {
+        clearInterval(move)
+        imgLast()
+        move = setInterval(imgNext, delay)
+      })
+    }
+    mySlicer(sliderWidth, sliderHeight, 1000)
+  </script>
+</body>
+</html>
