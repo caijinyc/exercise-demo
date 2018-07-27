@@ -1,7 +1,7 @@
 # 小练习
 
 ## [简单实现的轮播图](https://github.com/CaiJinyc/ex-demo/tree/master/slider)
-[预览地址](http://caijin.tech/ex-demo/slider)
+[预览地址](http://caijin.tech/exercise-demo/slider/)
 
 简单实现的一个轮播图，后期准备使用 vue 进行封装完善。
 
